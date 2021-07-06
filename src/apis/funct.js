@@ -44,5 +44,13 @@ export const getDatabyIfsc = async (ifsc) => {
     const res6 = await app.currentUser.functions.getdatabyifsc(ifsc)
     console.log(res6);
     return (res6);
+
+}
+
+export const UpdateData = async (name,ifsc,office,address,district,city,state,phone) => {
+
+    const res7 = await app.currentUser.functions.updatedata(name,ifsc,office,address,district,city,state,phone)
+    console.log(res7);
+    return (res7);
     
 }
