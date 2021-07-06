@@ -1,6 +1,6 @@
 import React,{ useState,useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
-import { getDatabyIfsc } from "../apis/funct";
+import { getDatabyIfsc,UpdateData } from "../apis/funct";
 
 
 const EditData = (props) => {
@@ -38,7 +38,7 @@ const EditData = (props) => {
     const handleUpdate = (evt) => {
         evt.preventDefault();
         console.log(name,ifsc,office,address,district,city,state,phone);
-        // updateUserbyName(data.name,updatename,mobile,email,active);
+        UpdateData(name,ifsc,office,address,district,city,state,phone);
         props.history.push("/");
     }
 
