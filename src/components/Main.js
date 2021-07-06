@@ -122,6 +122,9 @@ const Main = () => {
                     }}
                 ></input>
             </div>
+            <div>
+                <button><Link to="/createdata">Create Data</Link></button>
+            </div>
             <DataTable
             title="BANK DETAILS"
             data={data}
@@ -129,9 +132,6 @@ const Main = () => {
             pagination
             selectableRows
             ></DataTable>
-            <div>
-                <button><Link to="/createdata">Create Data</Link></button>
-            </div>
         </div>
     )
 }
