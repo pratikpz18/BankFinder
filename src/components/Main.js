@@ -68,8 +68,8 @@ const Main = () => {
 
     const columns = [
         {
-          name: "BANK NAME",
-          selector: "BANK NAME",
+          name: "BANK_NAME",
+          selector: "BANK_NAME",
         },
         {
           name: "IFSC",
