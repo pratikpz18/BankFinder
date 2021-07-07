@@ -54,3 +54,11 @@ export const UpdateData = async (name,ifsc,office,address,district,city,state,ph
     return (res7);
     
 }
+
+export const deleteAllData = async () => {
+
+    const res8 = await app.currentUser.functions.deletealldata()
+    console.log(res8);
+    return (res8);
+
+}
