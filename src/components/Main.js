@@ -2,7 +2,7 @@ import React,{useState,useEffect} from "react";
 import { Link } from 'react-router-dom';
 import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
-import { uploadDetails,getData,getAllDetails, deleteData } from "../apis/funct";
+import { uploadDetails,getData,getAllDetails, deleteData,deleteAllData } from "../apis/funct";
 
 const Main = () => {
 
@@ -66,6 +66,11 @@ const Main = () => {
         window.location.reload();
     }
 
+    const handleDeleteAllData = () => {
+        deleteAllData();
+        window.location.reload();
+    }
+
     const columns = [
         {
           name: "BANK_NAME",
@@ -122,8 +127,10 @@ const Main = () => {
                     }}
                 ></input>
             </div>
+            <br></br>
             <div>
-                <button><Link to="/createdata">Create Data</Link></button>
+                <button><Link to="/createdata">Create Data</Link></button> &nbsp;
+                <button onClick={ handleDeleteAllData }>Delete All Data</button>
             </div>
             <DataTable
             title="BANK DETAILS"
