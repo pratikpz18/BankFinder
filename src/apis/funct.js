@@ -62,3 +62,27 @@ export const deleteAllData = async () => {
     return (res8);
 
 }
+
+export const getAllStatesbyBankName = async (BANK_NAME) => {
+
+    const res8 = await app.currentUser.functions.getstatesbybankname(BANK_NAME)
+    console.log(res8);
+    return (res8);
+
+}
+
+export const getAllCitiesbyStateName = async (BANK_NAME,STATE) => {
+
+    const res8 = await app.currentUser.functions.getcitiesbystatename(BANK_NAME,STATE)
+    console.log(res8);
+    return (res8);
+
+}
+
+export const getBankDetailsByValue = async (BANK_NAME,STATE,CITY) => {
+
+    const res8 = await app.currentUser.functions.getbankdetailsbyvalue(BANK_NAME,STATE,CITY)
+    console.log(res8);
+    return (res8);
+
+}
