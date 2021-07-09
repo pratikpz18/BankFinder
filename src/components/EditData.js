@@ -6,7 +6,7 @@ import { getDatabyIfsc,UpdateData } from "../apis/funct";
 const EditData = (props) => {
 
     const { ifsccode } = useParams();
-    // console.log(ifsccode.slice(1));
+    // console.log(ifsccode);
 
     const [name,setName]=useState('');
     const [ifsc,setIfsc]=useState('');
@@ -20,7 +20,7 @@ const EditData = (props) => {
     const [data,setData] = useState([]);
 
     useEffect(() => {
-        getDatabyIfsc(ifsccode.slice(1))
+        getDatabyIfsc(ifsccode)
         .then(details => {
             setData(details);
             console.log(details)
