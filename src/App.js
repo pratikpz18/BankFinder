@@ -2,9 +2,10 @@ import './App.css';
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 import Main from "./components/Main";
 import CreateData from './components/CreateData';
-import EditData from './components/EditData'
+import EditData from './components/EditData';
 
 function App() {
+
   return (
     <Router>
       <div className="App">
@@ -12,7 +13,7 @@ function App() {
         <Switch>
           <Route path="/" component = {Main} exact />
           <Route exact path="/createdata" component={CreateData} exact/>
-          <Route exact path="/editdata/:ifsccode" render={(props) => <EditData {...props} />}  exact/>
+          <Route  path="/editdata/:ifsccode" component={EditData} exact/>
         </Switch>
       </div>
     </Router>
