@@ -14,6 +14,7 @@ const Main = () => {
     const [bankname,SetBankName] = useState('')
     const [statename,SetStateName] = useState('')
     const [cityname,SetCityName] = useState('')
+    const [page, setPage] = useState(1);
 
     const getalldata = async () => {
         try {
@@ -110,23 +111,12 @@ const Main = () => {
             name: "Operations",
             selector: "Operations",
             cell: row => (<div>
-                            <button><Link to={`/editdata/:${row.IFSC}`}>Edit Data</Link></button> &nbsp; 
+                            <button><Link to={`/editdata/${row.IFSC}`}>Edit Data</Link></button> &nbsp; 
                             <button onClick={() => {
                                 handleDelete(row.IFSC)}}>Delete</button>
                         </div>),
         },
     ];
-
-    // const filterListonState = (event) => {
-    //     let value = event.target.value;
-    //     console.log(data)
-    //     let res=[];
-    //     res = data.filter((d)=>{
-    //         return d.STATE.toUpperCase().search(value.toUpperCase()) != -1;
-    //     });
-    //     console.log(res)
-    //     SetResult(res)
-    // }
 
     function getUniqueListBy(arr, key) {
         return [...new Map(arr.map(item => [item[key], item])).values()]
@@ -135,12 +125,10 @@ const Main = () => {
     const bn = getUniqueListBy(data,'BANK_NAME');
     // const sn = getUniqueListBy(data,'STATE');
     // const cn = getUniqueListBy(data,'CITY');
-    
-    // console.log(data.find(cntry => cntry.BANK_NAME === 'IDFC First Bank Ltd').STATE)
 
     let s=[];
     const handleBankOption = (evt) => {
-        console.log(evt.target.value)
+        // console.log(evt.target.value)
         SetBankName(evt.target.value)
         getAllStatesbyBankName(evt.target.value)
         .then(res => res.map(d => {
@@ -153,7 +141,6 @@ const Main = () => {
         // console.log(getUniqueListBy(sn,'STATE'))
     }
 
-    console.log(bankname)
     let c=[];
     const handleStateOption = (evt) => {
         // console.log(bankname,evt.target.value)
@@ -166,8 +153,6 @@ const Main = () => {
             ))
         .catch( err => console.log(err))
     }
-
-    console.log(cn)
 
     const handleCityOption = (evt) => {
         // console.log(bankname,statename,evt.target.value)
@@ -183,7 +168,7 @@ const Main = () => {
         .catch( err => console.log(err))
     }
 
-    console.log(result)
+    // console.log(result)
 
     return (
         <div>
@@ -203,25 +188,35 @@ const Main = () => {
             </div>
             <br></br>
             <div>
-                <label>Bank Name</label>
-                <select onChange={handleBankOption}>
-                    <option >Choose Bank Name</option>
-                    {bn.map((d,index) => (
-                        <option 
-                        value={d.BANK_NAME} 
-                        key={index}
-                        >{d.BANK_NAME}</option>
-                    ))
-                    }
-                </select> &nbsp;
-                <label>State</label>
-                <select defaultValue=" " onChange={handleStateOption}>
-                    <option>Choose state</option>
-                    {sn.map((d,index) => (
-                        <option value={d} key={index}>{d}</option>
-                    ))
-                    }
-                </select> &nbsp;
+                {/* {data.length>0 ?
+                <div> */}
+                    <label>Bank Name</label>
+                    <select onChange={handleBankOption}>
+                        <option >Choose Bank Name</option>
+                        {bn.map((d,index) => (
+                            <option 
+                            value={d.BANK_NAME} 
+                            key={index}
+                            >{d.BANK_NAME}</option>
+                        ))
+                        }
+                    </select> &nbsp; 
+                    {/* </div> : <div></div>
+                } */}
+                {/* { bankname ? 
+                    <div> */}
+                    <label>State</label>
+                    <select defaultValue=" " onChange={handleStateOption}>
+                        <option>Choose state</option>
+                        {sn.map((d,index) => (
+                            <option value={d} key={index}>{d}</option>
+                        ))
+                        }
+                    </select> &nbsp;
+                    {/* </div> : <div></div>
+                } */}
+                {/* { statename ?
+                <div> */}
                 <label>City</label>
                 <select defaultValue=" " onChange={handleCityOption}>
                     <option>Choose City</option>
@@ -230,6 +225,8 @@ const Main = () => {
                     ))
                     }
                 </select> &nbsp;
+                {/* </div> : <div></div>
+                } */}
                 <button onClick={filterList}>Search</button>
             </div>
             { result.length == 0 ? 
@@ -242,6 +239,13 @@ const Main = () => {
                 data={result} 
                 columns={columns} 
                 pagination
+                // paginationServer
+                // paginationTotalRows={result.length}
+                // paginationPerPage={3}
+                // paginationComponentOptions={{
+                //     noRowsPerPage: true
+                // }}
+                // onChangePage={page => setPage(page)}
                 selectableRows
                 ></DataTable>
             }
