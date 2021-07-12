@@ -44,70 +44,123 @@ const EditData = (props) => {
 
     return (
         <div>
-            <h2>Edit Data</h2>
+            <nav className="navbar navbar-expand-lg navbar-dark  px-5">
+                <a className="navbar-brand " href="#">Data Admin</a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse ml-8" id="navbarSupportedContent">
+                    <ul className="navbar-nav ">
+                    <li className="nav-item pl-5">
+                        <a className="nav-link" href="/home">Home</a>
+                    </li>
+                    <li className="nav-item pl-5">
+                        <a className="nav-link" href="/ifsc">IFSC</a>
+                    </li>
+                    <li className="nav-item pl-5">
+                        <a className="nav-link" href="/createdata">Create Data</a>
+                    </li>
+                    </ul>
+                </div>
+            </nav>
+            <h2 className="my-2">Edit Data</h2>
             <div>
-                <form>
-                    <label>Bank Name</label>
+                <form className="my-4 ">
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Bank Name</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter Bank Name"
-                    defaultValue={data.BANK_NAME || ''}
+                    defaultValue={data.NAME || ''}
                     onChange={evt => setName(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>Ifsc Code</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Ifsc Code</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter IFSC Code"
                     defaultValue={data.IFSC || ''}
                     onChange={evt => setIfsc(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>Office</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Office</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter Office Area"
-                    defaultValue={data.OFFICE || ''}
+                    defaultValue={data.BRNC || ''}
                     onChange={evt => setOffice(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>ADDRESS</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">ADDRESS</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter Address"
-                    defaultValue={data.ADDRESS || ''}
+                    defaultValue={data.ADDR || ''}
                     onChange={evt => setAddress(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>District</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">District</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter District"
-                    defaultValue={data.DISTRICT || ''}
+                    defaultValue={data.LODT || ''}
                     onChange={evt => setDistrict(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>City</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">City</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter City"
-                    defaultValue={data.CITY || ''}
+                    defaultValue={data.LOCT || ''}
                     onChange={evt => setCity(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>State</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">State</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter State"
-                    defaultValue={data.STATE || ''}
+                    defaultValue={data.LOST || ''}
                     onChange={evt => setSTATE(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <label>Phone</label>
+                    </div>
+                </div>
+                <div className="form-group row">
+                    <label className="col-sm-2 col-form-label">Phone</label>
+                    <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
+                    className="form-control"
                     placeholder="enter your mobile number"
-                    defaultValue={data.PHONE || ''}
+                    defaultValue={data.MMID || ''}
                     onChange={evt => setPhone(evt.target.value)}
                     ></input>
-                    <br></br>
-                    <button onClick={handleUpdate}>Update Data</button>
+                    </div>
+                </div>
+                <div className="col-lg-2 col-sm-2 col-md-2 create-btn">
+                    <button type="button" className="btn btn-primary my-4 px-4" onClick={handleUpdate}>Update Data</button>
+                </div>
                 </form>
             </div>
             <div>
-                <Link to="/">Main Page</Link>
+                <Link to="/home">Main Page</Link>
             </div>
         </div>
     )
