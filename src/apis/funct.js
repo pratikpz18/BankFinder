@@ -31,9 +31,9 @@ export const deleteData = async (ifsc) => {
     
 }
 
-export const uploadDetails = async (file) => {
+export const uploadDetails = async (file,flag) => {
 
-    const res5 = await app.currentUser.functions.uploaddetails(file)
+    const res5 = await app.currentUser.functions.uploaddetails(file,flag)
     console.log(res5);
     return (res5);
 
@@ -82,6 +82,38 @@ export const getAllCitiesbyStateName = async (BANK_NAME,STATE) => {
 export const getBankDetailsByValue = async (BANK_NAME,STATE,CITY) => {
 
     const res8 = await app.currentUser.functions.getbankdetailsbyvalue(BANK_NAME,STATE,CITY)
+    console.log(res8);
+    return (res8);
+
+}
+
+// export const uploadData = async (data) => {
+
+//     const res8 = await app.currentUser.functions.uploaddata(data)
+//     console.log(res8);
+//     return (res8);
+
+// }
+
+export const getStatistics = async () => {
+
+    const res8 = await app.currentUser.functions.getstatistics()
+    console.log(res8);
+    return (res8);
+
+}
+
+export const getBankName = async () => {
+
+    const res8 = await app.currentUser.functions.getbanknames()
+    console.log(res8);
+    return (res8);
+
+}
+
+export const getDataByBankName = async (name) => {
+
+    const res8 = await app.currentUser.functions.getdatabybanknames(name)
     console.log(res8);
     return (res8);
 
