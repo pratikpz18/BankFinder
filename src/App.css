@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  overflow-x: hidden;
 }
 
 .App-logo {
@@ -35,4 +36,61 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.navbar{
+  background-color: #3d6cb9;
+  color: white;
+  font-weight:600;
+}
+
+.delete-btn{
+  margin-left:auto;
+}
+
+.label{
+  font-size: x-large;
+  font-weight: 600;
+  margin:0 6px 0 12px;
+}
+
+.input-div{
+  display: flex;
+}
+
+.select-option{
+  border-color: lightgrey;
+  padding: 2px;
+  color: rgb(58, 56, 56);
+  outline: none;
+  border-radius: 4px;
+}
+
+.select-option:focus{
+  border: 3px solid #17a2b8;
+}
+
+.file-input{
+  width: 60%;
+}
+
+.select{
+  width: 20%;
+}
+
+.loading{
+  position: absolute;
+  top: 40%;
+  left: 45%;
+}
+
+.form-group{
+  position: relative;
+  left: 28%;
+  padding: 6px;
+}
+
+.create-btn{
+  position: relative;
+  left: 48%;
 }
