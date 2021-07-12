@@ -2,7 +2,7 @@ import React,{useState,useEffect} from "react";
 import { Link } from 'react-router-dom';
 import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
-import { uploadDetails,getData,getAllDetails, deleteData,deleteAllData,getAllStatesbyBankName,getAllCitiesbyStateName,getBankDetailsByValue } from "../apis/funct";
+import { uploadDetails,getData,getAllDetails, deleteData,deleteAllData,getAllStatesbyBankName,getAllCitiesbyStateName,getBankDetailsByValue,uploadData } from "../apis/funct";
 
 const Main = () => {
 
@@ -14,7 +14,7 @@ const Main = () => {
     const [bankname,SetBankName] = useState('')
     const [statename,SetStateName] = useState('')
     const [cityname,SetCityName] = useState('')
-    const [page, setPage] = useState(1);
+    const [flag, setFlag] = useState(0);
 
     const getalldata = async () => {
         try {
@@ -47,9 +47,9 @@ const Main = () => {
             const data = XLSX.utils.sheet_to_json(ws);
     
             resolve(data);
-            console.log(data)
-            uploadDetails(data)
-      
+            console.log(data,flag)
+            uploadDetails(data,flag)
+            console.log(bn)
           };
     
           fileReader.onerror = (error) => {
@@ -75,45 +75,49 @@ const Main = () => {
 
     const columns = [
         {
-          name: "BANK_NAME",
-          selector: "BANK_NAME",
+          name: "NAME",
+          selector: "NAME",
         },
         {
           name: "IFSC",
           selector: "IFSC",
         },
         {
-            name: "OFFICE",
-            selector: "OFFICE",
+            name: "BRNC",
+            selector: "BRNC",
         },
         {
-            name: "ADDRESS",
-            selector: "ADDRESS",
+            name: "ADDR",
+            selector: "ADDR",
             grow:1,
         },
         {
-            name: "DISTRICT",
-            selector: "DISTRICT",
+            name: "LODT",
+            selector: "LODT",
         },
         {
-            name: "CITY",
-            selector: "CITY",
+            name: "LOCT",
+            selector: "LOCT",
         },
         {
-            name: "STATE",
-            selector: "STATE",
+            name: "LOST",
+            selector: "LOST",
         },
         {
-            name: "PHONE",
-            selector: "PHONE",
+            name: "MMID",
+            selector: "MMID",
         },
         {
             name: "Operations",
             selector: "Operations",
             cell: row => (<div>
-                            <button><Link to={`/editdata/${row.IFSC}`}>Edit Data</Link></button> &nbsp; 
-                            <button onClick={() => {
-                                handleDelete(row.IFSC)}}>Delete</button>
+                            <button type="button" className="btn btn-light mx-2">
+                                <Link to={`/editdata/${row.IFSC}`}>Edit Data</Link>
+                            </button> 
+                            <button type="button" 
+                                className="btn btn-danger" 
+                                onClick={() => {handleDelete(row.IFSC)}}
+                                >Delete</button>
                         </div>),
         },
     ];
@@ -122,7 +126,8 @@ const Main = () => {
         return [...new Map(arr.map(item => [item[key], item])).values()]
     }
 
-    const bn = getUniqueListBy(data,'BANK_NAME');
+    const bn = getUniqueListBy(data,'NAME');
+    console.log(bn)
     // const sn = getUniqueListBy(data,'STATE');
     // const cn = getUniqueListBy(data,'CITY');
 
@@ -133,7 +138,7 @@ const Main = () => {
         getAllStatesbyBankName(evt.target.value)
         .then(res => res.map(d => {
                 // console.log(d.STATE)
-                s.push(d.STATE)
+                s.push(d.LOST)
                 SetSn([... new Set(s)])
             }
             ))
@@ -147,7 +152,7 @@ const Main = () => {
         SetStateName(evt.target.value)
         getAllCitiesbyStateName(bankname,evt.target.value)
         .then(res => res.map(d => {
-                c.push(d.CITY2)
+                c.push(d.LOCT)
                 SetCn([... new Set(c)])
             }
             ))
@@ -168,70 +173,89 @@ const Main = () => {
         .catch( err => console.log(err))
     }
 
+    const handleFlag = (evt) => {
+        // console.log(evt.target.value)
+        setFlag(evt.target.value)
+    }
+
     // console.log(result)
 
     return (
         <div>
-            <div>
+        { data.length > 0 ? 
+        <div>
+            <nav className="navbar navbar-expand-lg navbar-dark  px-5">
+                <a className="navbar-brand " href="#">Data Admin</a>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse ml-8" id="navbarSupportedContent">
+                    <ul className="navbar-nav ">
+                    <li className="nav-item pl-5">
+                        <a className="nav-link" href="/home">Home</a>
+                    </li>
+                    <li className="nav-item pl-5">
+                        <a className="nav-link active" href="/ifsc">IFSC</a>
+                    </li>
+                    <li className="nav-item pl-5">
+                        <a className="nav-link" href="/createdata">Create Data</a>
+                    </li>
+                    </ul>
+                    <button className="btn btn-danger delete-btn" onClick={ handleDeleteAllData }>Delete All Data</button>
+                </div>
+            </nav>
+            <div className="col-sm-6 col-md-8 mx-auto my-4">
+                <h2 className="text-muted mb-4">Upload IFSC Excel File</h2>
+                <div className="col-md-8 mx-auto input-div " >
                 <input 
+                    className="col-md-4 form-control file-input mx-4" 
                     type="file"
                     onChange={(e) => {
                     const file = e.target.files[0];
                     readExcel(file);
                     }}
                 ></input>
+                <select className="mx-4 form-select select" onChange={handleFlag}>
+                    <option>select one</option>
+                    <option value="0">Bank Details</option>
+                    <option value="1">Bank Data</option>
+                </select>
+                </div>
             </div>
-            <br></br>
             <div>
-                <button><Link to="/createdata">Create Data</Link></button> &nbsp;
-                <button onClick={ handleDeleteAllData }>Delete All Data</button>
-            </div>
-            <br></br>
-            <div>
-                {/* {data.length>0 ?
-                <div> */}
-                    <label>Bank Name</label>
-                    <select onChange={handleBankOption}>
+                <div className="col-sm-6 col-md-10 mx-auto ">
+                    <label className="label">Bank Name</label>
+                    <select className="select-option" onChange={handleBankOption}>
                         <option >Choose Bank Name</option>
                         {bn.map((d,index) => (
                             <option 
-                            value={d.BANK_NAME} 
+                            value={d.NAME} 
                             key={index}
-                            >{d.BANK_NAME}</option>
+                            >{d.NAME}</option>
                         ))
                         }
-                    </select> &nbsp; 
-                    {/* </div> : <div></div>
-                } */}
-                {/* { bankname ? 
-                    <div> */}
-                    <label>State</label>
-                    <select defaultValue=" " onChange={handleStateOption}>
+                    </select>
+                    <label className="label">State</label>
+                    <select className="select-option" onChange={handleStateOption}>
                         <option>Choose state</option>
                         {sn.map((d,index) => (
                             <option value={d} key={index}>{d}</option>
                         ))
                         }
-                    </select> &nbsp;
-                    {/* </div> : <div></div>
-                } */}
-                {/* { statename ?
-                <div> */}
-                <label>City</label>
-                <select defaultValue=" " onChange={handleCityOption}>
-                    <option>Choose City</option>
-                    {cn.map((d,index) => (
-                        <option value={d} key={index}>{d}</option>
-                    ))
-                    }
-                </select> &nbsp;
-                {/* </div> : <div></div>
-                } */}
-                <button onClick={filterList}>Search</button>
+                    </select>
+                    <label className="label">City</label>
+                    <select className="select-option" onChange={handleCityOption}>
+                        <option>Choose City</option>
+                        {cn.map((d,index) => (
+                            <option value={d} key={index}>{d}</option>
+                        ))
+                        }
+                    </select>
+                    <button type="button" className="btn btn-primary mx-3 mb-1 px-3 " onClick={filterList}>Search</button>
             </div>
             { result.length == 0 ? 
-                <div>
-                    <h2>Use the Search Filter for Retrieving Data</h2>
+                <div className="my-4">
+                    <h2 className="text-muted">Use the Search Filter for Retrieving Data</h2>
                 </div> 
             : 
             <DataTable
@@ -266,6 +290,17 @@ const Main = () => {
                 selectableRows
                 ></DataTable>
             } */}
+        </div>
+        </div> 
+            : <div className="loading">
+                <div >
+                    <h2 className="text-success">Loading .... </h2>
+                    <div className="my-4">
+                        <Link to="/createdata">Create Data</Link>
+                    </div>
+                </div>
+               </div>
+        }
         </div>
     )
 }
