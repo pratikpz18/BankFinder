@@ -1,4 +1,5 @@
 import * as Realm from 'realm-web';
+import fire from '../config/firebase';
 const app = new Realm.App({ id:  "test-avfxt" });
 
 // export const getData = async () => {
@@ -118,3 +119,15 @@ export const getDataByBankName = async (name) => {
     return (res8);
 
 }
+
+// export const getWeatherData = async (city) => {
+
+//     const res8 = await app.currentUser.functions.getweatherinfo(city)
+//     console.log(res8);
+//     return (res8);
+
+// }
+
+// export const handleLogout = () => {
+//     fire.auth().signOut()
+// }
