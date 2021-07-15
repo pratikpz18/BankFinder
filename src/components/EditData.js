@@ -1,7 +1,7 @@
 import React,{ useState,useEffect } from "react";
 import { Link, useParams } from 'react-router-dom';
 import { getDatabyIfsc,UpdateData } from "../apis/funct";
-
+import { useAuth } from "../context/AuthContext"
 
 const EditData = (props) => {
 
@@ -16,22 +16,22 @@ const EditData = (props) => {
     const [city,setCity]=useState('');
     const [state,setSTATE]=useState('');
     const [phone,setPhone]=useState('');
-
     const [data,setData] = useState([]);
+    const { currentUser, logout } = useAuth()
 
     useEffect(() => {
         getDatabyIfsc(ifsccode)
         .then(details => {
             setData(details);
             console.log(details)
-            setName(details.BANK_NAME);
-            setIfsc(details.IFSC);
-            setOffice(details.OFFICE);
-            setAddress(details.ADDRESS);
-            setDistrict(details.DISTRICT);
-            setCity(details.CITY);
-            setSTATE(details.STATE);
-            setPhone(details.PHONE);
+            setName(details.name);
+            setIfsc(details.ifsc);
+            setOffice(details.brnc);
+            setAddress(details.addr);
+            setDistrict(details.lodt);
+            setCity(details.loct);
+            setSTATE(details.lost);
+            setPhone(details.mmid);
         })
     },[])
 
@@ -39,10 +39,12 @@ const EditData = (props) => {
         evt.preventDefault();
         console.log(name,ifsc,office,address,district,city,state,phone);
         UpdateData(name,ifsc,office,address,district,city,state,phone);
-        props.history.push("/");
+        props.history.push("/home");
     }
 
     return (
+        <div>
+        { currentUser ?
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark  px-5">
                 <a className="navbar-brand " href="#">Data Admin</a>
@@ -72,7 +74,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter Bank Name"
-                    defaultValue={data.NAME || ''}
+                    defaultValue={data.name || ''}
                     onChange={evt => setName(evt.target.value)}
                     ></input>
                     </div>
@@ -83,7 +85,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter IFSC Code"
-                    defaultValue={data.IFSC || ''}
+                    defaultValue={data.ifsc || ''}
                     onChange={evt => setIfsc(evt.target.value)}
                     ></input>
                     </div>
@@ -94,7 +96,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter Office Area"
-                    defaultValue={data.BRNC || ''}
+                    defaultValue={data.brnc || ''}
                     onChange={evt => setOffice(evt.target.value)}
                     ></input>
                     </div>
@@ -105,7 +107,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter Address"
-                    defaultValue={data.ADDR || ''}
+                    defaultValue={data.addr || ''}
                     onChange={evt => setAddress(evt.target.value)}
                     ></input>
                     </div>
@@ -116,7 +118,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter District"
-                    defaultValue={data.LODT || ''}
+                    defaultValue={data.lodt || ''}
                     onChange={evt => setDistrict(evt.target.value)}
                     ></input>
                     </div>
@@ -127,7 +129,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter City"
-                    defaultValue={data.LOCT || ''}
+                    defaultValue={data.loct || ''}
                     onChange={evt => setCity(evt.target.value)}
                     ></input>
                     </div>
@@ -138,7 +140,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter State"
-                    defaultValue={data.LOST || ''}
+                    defaultValue={data.lost || ''}
                     onChange={evt => setSTATE(evt.target.value)}
                     ></input>
                     </div>
@@ -149,7 +151,7 @@ const EditData = (props) => {
                     <input 
                     className="form-control"
                     placeholder="enter your mobile number"
-                    defaultValue={data.MMID || ''}
+                    defaultValue={data.mmid || ''}
                     onChange={evt => setPhone(evt.target.value)}
                     ></input>
                     </div>
@@ -162,6 +164,13 @@ const EditData = (props) => {
             <div>
                 <Link to="/home">Main Page</Link>
             </div>
+        </div>
+        :
+        <div> 
+            <h2>You are Not Logged In</h2>
+            <Link to="/">Login</Link>
+        </div>
+        }
         </div>
     )
 }

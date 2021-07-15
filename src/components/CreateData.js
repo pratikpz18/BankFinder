@@ -1,6 +1,7 @@
-import React,{useState,useEffect} from "react";
+import React,{useState} from "react";
 import { Link } from 'react-router-dom';
-import {createData} from '../apis/funct'
+import {createData } from '../apis/funct'
+import { useAuth } from "../context/AuthContext"
 
 const CreateData = (props) => {
 
@@ -12,16 +13,28 @@ const CreateData = (props) => {
     const [city,setCity]=useState('');
     const [state,setSTATE]=useState('');
     const [phone,setPhone]=useState('');
+    const { currentUser, logout } = useAuth()
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
         console.log(name,ifsc,office,address,district,city,state,phone);
         createData(name,ifsc,office,address,district,city,state,phone);
-        evt.target.reset();
-        props.history.push("/");
+        // evt.target.reset();
+        props.history.push("/home");
     }
 
+    const handleLogout = async () =>  {    
+        try {
+          await logout()
+          props.history.push("/")
+        } catch {
+          console.log("Failed to log out")
+        }
+      }
+
     return(
+        <div>
+        { currentUser ?
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark  px-5">
                 <a className="navbar-brand" href="/">Data Admin</a>
@@ -40,10 +53,11 @@ const CreateData = (props) => {
                         <a className="nav-link active " href="/createdata">Create Data</a>
                     </li>
                     </ul>
+                    <button className="btn btn-danger logout-btn" onClick={ handleLogout }>Logout</button>
                 </div>
             </nav>
             <div>
-                <form onSubmit={handleSubmit} className="my-4 ">
+                <form className="my-4 ">
                 <div className="form-group row">
                     <label className="col-sm-2 col-form-label">Bank Name</label>
                     <div className="col-sm-4 col-md-4 col-lg-2">
@@ -65,7 +79,7 @@ const CreateData = (props) => {
                     </div>
                 </div>
                 <div className="form-group row">
-                    <label className="col-sm-2 col-form-label">Office</label>
+                    <label className="col-sm-2 col-form-label">BRANCH</label>
                     <div className="col-sm-4 col-md-4 col-lg-2">
                     <input 
                     className="form-control"
@@ -125,7 +139,7 @@ const CreateData = (props) => {
                     </div>
                 </div>
                 <div className="col-lg-2 col-sm-2 col-md-2 create-btn">
-                    <button type="button" className="btn btn-primary my-4 px-4">Create Data</button>
+                    <button type="button" className="btn btn-primary my-4 px-4" onClick={handleSubmit}>Create Data</button>
                 </div>
                 </form>
             </div>
@@ -228,6 +242,13 @@ const CreateData = (props) => {
                     </div>
                     <button className="btn btn-primary">Create Data</button>
                 </form> */}
+        </div>
+        :
+        <div> 
+            <h2>You are Not Logged In</h2>
+            <Link to="/">Login</Link>
+        </div>
+        }
         </div>
     )
 }
