@@ -41,7 +41,7 @@ const Login = (props) => {
     }
 
     return (
-        <div>
+        <div className="my-5">
             <h2>Login</h2>
             <form  className="my-4 ">
                 <div className="form-group row">
