@@ -1,14 +1,16 @@
 import React,{ useState,useEffect } from "react";
 import { Link } from 'react-router-dom';
 import DataTable from "react-data-table-component";
-import { getStatistics,getBankName,getDataByBankName } from "../apis/funct";
+import { getStatistics,getBankName,getDataByBankName, } from "../apis/funct";
+import { useAuth } from "../context/AuthContext"
 
-const Home = () => {
+const Home = (props) => {
     
     const [sd,SetSd] = useState([]);
     const [names,SetNames] = useState([]);
     const [name,SetName] = useState('');
     const [data,SetData] = useState([]);
+    const { currentUser, logout } = useAuth()
 
     const getstats = async () => {
         await getStatistics()
@@ -23,13 +25,21 @@ const Home = () => {
         .catch( err => console.log(err))
     }
 
+    const handleLogout = async () =>  {    
+        try {
+          await logout()
+          props.history.push("/")
+        } catch {
+          console.log("Failed to log out")
+        }
+    }
 
     const handleBankOption = (evt) => {
         // console.log(evt.target.value)
         SetName(evt.target.value)
     }
 
-    console.log(name)
+    // console.log(name)
 
     const ViewData = async () => {
         try{
@@ -46,50 +56,52 @@ const Home = () => {
 
     const columns = [
         {
-          name: "NAME",
-          selector: "NAME",
+            name: "name",
+            selector: "name",
         },
         {
-          name: "IFSC",
-          selector: "IFSC",
+        name: "ifsc",
+        selector: "ifsc",
         },
         {
-            name: "BRNC",
-            selector: "BRNC",
+            name: "brnc",
+            selector: "brnc",
         },
         {
-            name: "ADDR",
-            selector: "ADDR",
+            name: "addr",
+            selector: "addr",
             grow:1,
         },
         {
-            name: "LODT",
-            selector: "LODT",
+            name: "lodt",
+            selector: "lodt",
         },
         {
-            name: "LOCT",
-            selector: "LOCT",
+            name: "loct",
+            selector: "loct",
         },
         {
-            name: "LOST",
-            selector: "LOST",
+            name: "lost",
+            selector: "lost",
         },
         {
-            name: "MMID",
-            selector: "MMID",
+            name: "mmid",
+            selector: "mmid",
         },
         {
             name: "Operations",
             selector: "Operations",
             cell: row => (<div>
                             <button type="button" className="btn btn-light mx-2">
-                                <Link to={`/editdata/${row.IFSC}`}>Edit Data</Link>
+                                <Link to={`/editdata/${row.ifsc}`}>Edit Data</Link>
                             </button>
                         </div>),
         },
     ];
 
     return (
+        <div>
+        { currentUser ?
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark  px-5">
                 <a className="navbar-brand " href="#">Data Admin</a>
@@ -108,6 +120,7 @@ const Home = () => {
                         <a className="nav-link" href="/createdata">Create Data</a>
                     </li>
                     </ul>
+                    <button className="btn btn-danger logout-btn" onClick={ handleLogout }>Logout</button>
                 </div>
             </nav>
             { sd.length >0 ?
@@ -124,9 +137,9 @@ const Home = () => {
                         <option >Choose Bank Name</option>
                         {names.map((d,index) => (
                             <option 
-                            value={d.NAME} 
+                            value={d.name} 
                             key={index}
-                            >{d.NAME}</option>
+                            >{d.name}</option>
                         ))
                         }
                     </select>
@@ -154,6 +167,30 @@ const Home = () => {
                 <h2 className="text-success">Loading .... </h2>
             </div>
             }
+            {/* { weat ? 
+            <div>
+                <h2>Weather</h2>
+                <input 
+                placeholder="enter city"
+                onChange={(e) => SetCityName(e.target.value)}
+                ></input>
+                <button 
+                className="btn btn-primary mx-2"
+                onClick={handleWeatherData}>Show Data</button>
+                <div className="my-4">
+                    <p><strong>{wd.name}</strong> Temparature is <strong>{wd.main.temp}</strong> Celcius and <strong>{wd.weather[0].description}</strong> weather</p>
+                </div>
+            </div> : 
+            <div></div>
+            } */}
+
+        </div>
+        :
+        <div> 
+            <h2>You are Not Logged In</h2>
+            <Link to="/">Login</Link>
+        </div>
+        }
         </div>
     )
 }

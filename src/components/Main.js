@@ -3,8 +3,10 @@ import { Link } from 'react-router-dom';
 import DataTable from "react-data-table-component";
 import * as XLSX from "xlsx";
 import { uploadDetails,getData,getAllDetails, deleteData,deleteAllData,getAllStatesbyBankName,getAllCitiesbyStateName,getBankDetailsByValue,uploadData } from "../apis/funct";
+import { useAuth } from "../context/AuthContext"
 
-const Main = () => {
+
+const Main = (props) => {
 
     const [items, setItems] = useState([]);
     const [data,SetData] = useState([]);
@@ -15,6 +17,7 @@ const Main = () => {
     const [statename,SetStateName] = useState('')
     const [cityname,SetCityName] = useState('')
     const [flag, setFlag] = useState(0);
+    const { currentUser, logout } = useAuth()
 
     const getalldata = async () => {
         try {
@@ -75,48 +78,48 @@ const Main = () => {
 
     const columns = [
         {
-          name: "NAME",
-          selector: "NAME",
+          name: "name",
+          selector: "name",
         },
         {
-          name: "IFSC",
-          selector: "IFSC",
+          name: "ifsc",
+          selector: "ifsc",
         },
         {
-            name: "BRNC",
-            selector: "BRNC",
+            name: "brnc",
+            selector: "brnc",
         },
         {
-            name: "ADDR",
-            selector: "ADDR",
+            name: "addr",
+            selector: "addr",
             grow:1,
         },
         {
-            name: "LODT",
-            selector: "LODT",
+            name: "lodt",
+            selector: "lodt",
         },
         {
-            name: "LOCT",
-            selector: "LOCT",
+            name: "loct",
+            selector: "loct",
         },
         {
-            name: "LOST",
-            selector: "LOST",
+            name: "lost",
+            selector: "lost",
         },
         {
-            name: "MMID",
-            selector: "MMID",
+            name: "mmid",
+            selector: "mmid",
         },
         {
             name: "Operations",
             selector: "Operations",
             cell: row => (<div>
                             <button type="button" className="btn btn-light mx-2">
-                                <Link to={`/editdata/${row.IFSC}`}>Edit Data</Link>
+                                <Link to={`/editdata/${row.ifsc}`}>Edit Data</Link>
                             </button> 
                             <button type="button" 
                                 className="btn btn-danger" 
-                                onClick={() => {handleDelete(row.IFSC)}}
+                                onClick={() => {handleDelete(row.ifsc)}}
                                 >Delete</button>
                         </div>),
         },
@@ -126,7 +129,7 @@ const Main = () => {
         return [...new Map(arr.map(item => [item[key], item])).values()]
     }
 
-    const bn = getUniqueListBy(data,'NAME');
+    const bn = getUniqueListBy(data,'name');
     console.log(bn)
     // const sn = getUniqueListBy(data,'STATE');
     // const cn = getUniqueListBy(data,'CITY');
@@ -138,7 +141,7 @@ const Main = () => {
         getAllStatesbyBankName(evt.target.value)
         .then(res => res.map(d => {
                 // console.log(d.STATE)
-                s.push(d.LOST)
+                s.push(d.lost)
                 SetSn([... new Set(s)])
             }
             ))
@@ -152,7 +155,7 @@ const Main = () => {
         SetStateName(evt.target.value)
         getAllCitiesbyStateName(bankname,evt.target.value)
         .then(res => res.map(d => {
-                c.push(d.LOCT)
+                c.push(d.loct)
                 SetCn([... new Set(c)])
             }
             ))
@@ -178,11 +181,22 @@ const Main = () => {
         setFlag(evt.target.value)
     }
 
+    const handleLogout = async () =>  {    
+        try {
+          await logout()
+          props.history.push("/")
+        } catch {
+          console.log("Failed to log out")
+        }
+      }
+
     // console.log(result)
 
     return (
         <div>
-        { data.length > 0 ? 
+        {currentUser ? 
+        <div>
+        { data.length > 0  ? 
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark  px-5">
                 <a className="navbar-brand " href="#">Data Admin</a>
@@ -202,6 +216,7 @@ const Main = () => {
                     </li>
                     </ul>
                     <button className="btn btn-danger delete-btn" onClick={ handleDeleteAllData }>Delete All Data</button>
+                    <button className="btn btn-danger logout-btn" onClick={ handleLogout }>Logout</button>
                 </div>
             </nav>
             <div className="col-sm-6 col-md-8 mx-auto my-4">
@@ -229,9 +244,9 @@ const Main = () => {
                         <option >Choose Bank Name</option>
                         {bn.map((d,index) => (
                             <option 
-                            value={d.NAME} 
+                            value={d.name} 
                             key={index}
-                            >{d.NAME}</option>
+                            >{d.name}</option>
                         ))
                         }
                     </select>
@@ -292,7 +307,7 @@ const Main = () => {
             } */}
         </div>
         </div> 
-            : <div className="loading">
+             : <div className="loading">
                 <div >
                     <h2 className="text-success">Loading .... </h2>
                     <div className="my-4">
@@ -300,6 +315,13 @@ const Main = () => {
                     </div>
                 </div>
                </div>
+        } 
+        </div>
+        :
+        <div> 
+            <h2>You are Not Logged In</h2>
+            <Link to="/">Login</Link>
+        </div>
         }
         </div>
     )
