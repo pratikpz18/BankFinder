@@ -1,15 +1,43 @@
 import React,{ useState,useEffect } from "react";
+import fire from '../config/firebase'
+import { useAuth } from "../context/AuthContext"
+
 
 const Login = (props) => {
 
     const [email,SetEmail] = useState('');
     const [password,SetPassword] = useState('');
+    const { login } = useAuth()
 
-    const handleSubmit = (evt) => {
+    const handleSubmit = async (evt) => {
         console.log(email,password)
-        if(password == '123456' && email!=''){
-            props.history.push("/home");
+        try{
+            await login(email, password)
+            props.history.push('/home')
+        }catch(err){
+            console.log(err)
         }
+        // fire.auth()
+        //     .signInWithEmailAndPassword(email, password)
+        //     .then((userCredential) => {
+        //         var user = userCredential.user;
+        //         console.log(user);
+        //         props.history.push('/home')
+        //       })
+        //       .catch((error) => {
+        //         console.log(error)
+        //       });
+    }
+
+    const authListener = () => {
+        fire.auth().onAuthStateChanged((user) => {
+            if (user) {
+              console.log(user)
+            } else {
+              console.log("logged out")
+              props.history.push('/')
+            }
+          });
     }
 
     return (
