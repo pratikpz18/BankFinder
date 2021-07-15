@@ -44,8 +44,13 @@
   font-weight:600;
 }
 
-.delete-btn{
+
+.logout-btn{
   margin-left:auto;
+}
+
+.delete-btn{
+  margin-left: 66%;
 }
 
 .label{
