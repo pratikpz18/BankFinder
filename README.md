@@ -1,5 +1,5 @@
 
-# TASK2
+# Bank Details
 
 ### Instruction :
 - Clone the repo.
